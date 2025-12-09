@@ -1,0 +1,88 @@
+# Kiro Account Manager
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-blue" alt="Platform">
+  <img src="https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?label=Version&color=green" alt="Version">
+  <img src="https://img.shields.io/badge/QQ群-1020204332-12B7F5?logo=tencentqq" alt="QQ群">
+</p>
+
+<p align="center">
+  <a href="README.md">English</a> | <a href="README_zh-CN.md">简体中文</a> | <a href="README_ru-RU.md">Русский</a>
+</p>
+
+<p align="center">
+  <b>Smart Kiro token management with one-click switching and quota monitoring</b>
+</p>
+
+---
+
+## ✨ Features
+
+### Account Management
+- 🔐 **Multi-Account** - Support Google, GitHub, BuilderId login
+- 🎴 **Card Grid Layout** - Visual display of account status, quota, subscription type
+- 📊 **Quota Monitoring** - Real-time quota usage (main/trial/bonus)
+- 🔄 **One-Click Switch** - Quick account switching with optional machine ID reset
+- 📦 **Batch Operations** - Batch refresh, delete, import/export
+- ⏰ **Auto Token Refresh** - Scheduled refresh to keep tokens valid
+
+### IDE Integration
+- ⚙️ **IDE Settings** - Proxy/model settings sync
+- 🔑 **Machine ID Management** - Reset Kiro IDE machine ID
+- 🛡️ **System Machine Code** - Backup/restore/reset Windows MachineGuid (admin required)
+
+### Configuration Management
+- 🔌 **MCP Server Management** - View, add, edit, enable/disable MCP configs
+- ⚡ **Powers Management** - View, install, uninstall Powers
+
+### UI Features
+- 🎨 **Theme Switching** - Light, dark, purple, green themes
+- 🔄 **Auto Update** - Check and download new versions
+- 🔒 **Local Storage** - All data stored locally, privacy safe
+
+## 📸 Screenshots
+
+| Home | Account Management |
+|:---:|:---:|
+| ![Home](screenshots/首页.png) | ![Accounts](screenshots/账号管理.png) |
+
+| Login | Settings |
+|:---:|:---:|
+| ![Login](screenshots/登录页.png) | ![Settings](screenshots/设置.png) |
+
+## 📥 Download
+
+[![Release](https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?style=flat-square)](https://github.com/hj01857655/kiro-account-manager/releases/latest)
+
+👉 **[Download Latest Version](https://github.com/hj01857655/kiro-account-manager/releases/latest)**
+
+| Platform | File Type | Description |
+|----------|-----------|-------------|
+| Windows | `.msi` | Recommended, double-click to install |
+| Windows | `.exe` | NSIS installer |
+| macOS | `.dmg` | Drag to Applications |
+
+## 💻 System Requirements
+
+- **Windows**: Windows 10/11 (64-bit), WebView2 required (built-in on Win11)
+- **macOS**: macOS 10.15+ (Intel/Apple Silicon universal)
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18 + Vite 5 + TailwindCSS 3 + Lingui (i18n)
+- **Backend**: Tauri 2.x + Rust + Tokio
+- **Icons**: Lucide React
+- **Storage**: Local JSON files
+
+## 💬 Feedback
+
+- 🐛 [Submit Issue](https://github.com/hj01857655/kiro-account-manager/issues)
+- 💬 QQ Group: [1020204332](https://qm.qq.com/q/Vh7mUrNpa8)
+
+## ⚠️ Disclaimer
+
+This software is for learning and communication purposes only. Do not use for commercial purposes. Users are responsible for any consequences.
+
+---
+
+<p align="center">Made with ❤️ by hj01857655</p>
