@@ -6,10 +6,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-blue" alt="Platform">
-  <img src="https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?label=Version&color=green" alt="Version">
-  <img src="https://img.shields.io/github/downloads/hj01857655/kiro-account-manager/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/github/license/hj01857655/kiro-account-manager?color=orange" alt="License">
-  <img src="https://img.shields.io/badge/QQ群-1020204332-12B7F5?logo=tencentqq" alt="QQ群">
+  <img src="https://img.shields.io/github/v/release/ipiggyzhu/KiroAccountManager?label=Version&color=green" alt="Version">
+  <img src="https://img.shields.io/github/downloads/ipiggyzhu/KiroAccountManager/total?color=brightgreen" alt="Downloads">
+  <img src="https://img.shields.io/github/license/ipiggyzhu/KiroAccountManager?color=orange" alt="License">
 </p>
 
 <p align="center">
@@ -44,8 +43,6 @@
 ### 📦 批量操作
 - 批量刷新 / 批量删除
 - JSON 导入导出
-  - Social：refreshToken + provider
-  - IdC：refreshToken + clientId + clientSecret
 - SSO Token 批量导入
 - 关键词搜索过滤
 
@@ -59,7 +56,6 @@
 - AI 模型选择与锁定
 - Token 自动刷新（可配置间隔）
 - 切号自动重置机器 ID
-- 机器 ID 绑定账号
 
 ### 🌐 浏览器与代理
 - 自定义浏览器 / 自动检测
@@ -75,21 +71,11 @@
 - 一键启动 / 关闭
 - 自动同步代理和模型设置
 
-## 📸 截图
-
-| 首页 | 账号管理 |
-|:---:|:---:|
-| ![首页](screenshots/首页.png) | ![账号管理](screenshots/账号管理.png) |
-
-| 登录 | 设置 |
-|:---:|:---:|
-| ![登录页](screenshots/登录页.png) | ![设置](screenshots/设置.png) |
-
 ## 📥 下载
 
-[![Release](https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?style=flat-square)](https://github.com/hj01857655/kiro-account-manager/releases/latest)
+[![Release](https://img.shields.io/github/v/release/ipiggyzhu/KiroAccountManager?style=flat-square)](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)
 
-👉 **[点击这里下载最新版本](https://github.com/hj01857655/kiro-account-manager/releases/latest)**
+👉 **[点击这里下载最新版本](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)**
 
 | 平台 | 文件类型 | 说明 |
 |------|----------|------|
@@ -118,17 +104,9 @@
 | MCP 配置 | `~/.kiro/settings/mcp.json` |
 | Powers 注册表 | `~/.kiro/powers/registry.json` |
 
-## 💬 交流反馈
+## 💬 反馈
 
-- 💡 问题反馈、功能建议、使用交流
-- 🐛 [提交 Issue](https://github.com/hj01857655/kiro-account-manager/issues)
-- 💬 QQ 群：[Kiro Account Manager 交流群 (1020204332)](https://qm.qq.com/q/Vh7mUrNpa8)
-
-<p align="center">
-  <a href="https://qm.qq.com/q/Vh7mUrNpa8">
-    <img src="https://img.shields.io/badge/QQ群-1020204332-12B7F5?style=for-the-badge&logo=tencentqq&logoColor=white" alt="QQ群">
-  </a>
-</p>
+- 🐛 [提交 Issue](https://github.com/ipiggyzhu/KiroAccountManager/issues)
 
 ## ⚠️ 免责声明
 
@@ -138,11 +116,4 @@
 
 [GPL-3.0](LICENSE) - 修改后必须开源。
 
-## 🙏 致谢
 
-本项目基于 [hj01857655](https://github.com/hj01857655) 的 [kiro-account-manager](https://github.com/hj01857655/kiro-account-manager) 开发，感谢原作者的优秀工作！
-
----
-
-<p align="center">原项目作者 <a href="https://github.com/hj01857655">hj01857655</a> ❤️</p>
-<p align="center">如果这个项目对你有帮助，请给原项目一个 ⭐ 支持！</p>

@@ -6,10 +6,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-blue" alt="Platform">
-  <img src="https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?label=Version&color=green" alt="Version">
-  <img src="https://img.shields.io/github/downloads/hj01857655/kiro-account-manager/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/github/license/hj01857655/kiro-account-manager?color=orange" alt="License">
-  <img src="https://img.shields.io/badge/QQ群-1020204332-12B7F5?logo=tencentqq" alt="QQ群">
+  <img src="https://img.shields.io/github/v/release/ipiggyzhu/KiroAccountManager?label=Version&color=green" alt="Version">
+  <img src="https://img.shields.io/github/downloads/ipiggyzhu/KiroAccountManager/total?color=brightgreen" alt="Downloads">
+  <img src="https://img.shields.io/github/license/ipiggyzhu/KiroAccountManager?color=orange" alt="License">
 </p>
 
 <p align="center">
@@ -29,7 +28,7 @@
 - **Web Portal OAuth** - Веб-авторизация в окне WebView
 - Два метода дополняют друг друга для надёжного входа
 
-### � Отобраыжение аккаунтов
+### 📊 Отображение аккаунтов
 - Карточный интерфейс, всё наглядно
 - Прогресс-бар квот (основные/пробные/бонусные)
 - Значок типа подписки (Free/PRO/PRO+)
@@ -44,8 +43,6 @@
 ### 📦 Пакетные операции
 - Массовое обновление / удаление
 - Импорт/экспорт JSON
-  - Social: refreshToken + provider
-  - IdC: refreshToken + clientId + clientSecret
 - Массовый импорт SSO Token
 - Поиск по ключевым словам
 
@@ -74,21 +71,11 @@
 - Запуск / остановка в один клик
 - Автосинхронизация прокси и настроек модели
 
-## 📸 Скриншоты
-
-| Главная | Управление аккаунтами |
-|:---:|:---:|
-| ![Главная](screenshots/首页.png) | ![Аккаунты](screenshots/账号管理.png) |
-
-| Вход | Настройки |
-|:---:|:---:|
-| ![Вход](screenshots/登录页.png) | ![Настройки](screenshots/设置.png) |
-
 ## 📥 Скачать
 
-[![Release](https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?style=flat-square)](https://github.com/hj01857655/kiro-account-manager/releases/latest)
+[![Release](https://img.shields.io/github/v/release/ipiggyzhu/KiroAccountManager?style=flat-square)](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)
 
-👉 **[Скачать последнюю версию](https://github.com/hj01857655/kiro-account-manager/releases/latest)**
+👉 **[Скачать последнюю версию](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)**
 
 | Платформа | Тип файла | Описание |
 |-----------|-----------|----------|
@@ -110,8 +97,7 @@
 
 ## 💬 Обратная связь
 
-- 🐛 [Создать Issue](https://github.com/hj01857655/kiro-account-manager/issues)
-- 💬 QQ группа: [1020204332](https://qm.qq.com/q/Vh7mUrNpa8)
+- 🐛 [Создать Issue](https://github.com/ipiggyzhu/KiroAccountManager/issues)
 
 ## ⚠️ Отказ от ответственности
 
@@ -121,7 +107,4 @@
 
 [GPL-3.0](LICENSE) - Модификации должны быть открыты.
 
----
 
-<p align="center">Made with ❤️ by hj01857655</p>
-<p align="center">Если проект вам помог, поставьте ⭐!</p>

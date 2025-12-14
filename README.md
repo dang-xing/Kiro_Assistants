@@ -6,10 +6,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-blue" alt="Platform">
-  <img src="https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?label=Version&color=green" alt="Version">
-  <img src="https://img.shields.io/github/downloads/hj01857655/kiro-account-manager/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/github/license/hj01857655/kiro-account-manager?color=orange" alt="License">
-  <img src="https://img.shields.io/badge/QQ群-1020204332-12B7F5?logo=tencentqq" alt="QQ群">
+  <img src="https://img.shields.io/github/v/release/ipiggyzhu/KiroAccountManager?label=Version&color=green" alt="Version">
+  <img src="https://img.shields.io/github/downloads/ipiggyzhu/KiroAccountManager/total?color=brightgreen" alt="Downloads">
+  <img src="https://img.shields.io/github/license/ipiggyzhu/KiroAccountManager?color=orange" alt="License">
 </p>
 
 <p align="center">
@@ -72,21 +71,11 @@
 - One-click start / stop
 - Auto sync proxy and model settings
 
-## 📸 Screenshots
-
-| Home | Account Management |
-|:---:|:---:|
-| ![Home](screenshots/首页.png) | ![Accounts](screenshots/账号管理.png) |
-
-| Login | Settings |
-|:---:|:---:|
-| ![Login](screenshots/登录页.png) | ![Settings](screenshots/设置.png) |
-
 ## 📥 Download
 
-[![Release](https://img.shields.io/github/v/release/hj01857655/kiro-account-manager?style=flat-square)](https://github.com/hj01857655/kiro-account-manager/releases/latest)
+[![Release](https://img.shields.io/github/v/release/ipiggyzhu/KiroAccountManager?style=flat-square)](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)
 
-👉 **[Download Latest Version](https://github.com/hj01857655/kiro-account-manager/releases/latest)**
+👉 **[Download Latest Version](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)**
 
 | Platform | File Type | Description |
 |----------|-----------|-------------|
@@ -108,19 +97,14 @@
 
 ## 🚀 Quick Start
 
-1. Download the installer for your platform from [Releases](https://github.com/hj01857655/kiro-account-manager/releases/latest)
+1. Download the installer for your platform from [Releases](https://github.com/ipiggyzhu/KiroAccountManager/releases/latest)
 2. Install and launch the application
 3. Login with Google, GitHub, or BuilderId
 4. Manage your Kiro accounts with ease!
 
 ## 💬 Feedback
 
-- 🐛 [Submit Issue](https://github.com/hj01857655/kiro-account-manager/issues)
-- 💬 QQ Group: [1020204332](https://qm.qq.com/q/Vh7mUrNpa8)
-
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=hj01857655/kiro-account-manager&type=Date)](https://star-history.com/#hj01857655/kiro-account-manager&Date)
+- 🐛 [Submit Issue](https://github.com/ipiggyzhu/KiroAccountManager/issues)
 
 ## ⚠️ Disclaimer
 
@@ -129,12 +113,3 @@ This software is for learning and communication purposes only. Do not use for co
 ## 📄 License
 
 [GPL-3.0](LICENSE) - Modifications must be open-sourced.
-
-## 🙏 Acknowledgments
-
-This project is based on [kiro-account-manager](https://github.com/hj01857655/kiro-account-manager) by [hj01857655](https://github.com/hj01857655). Thanks for the excellent work!
-
----
-
-<p align="center">Original project by <a href="https://github.com/hj01857655">hj01857655</a> ❤️</p>
-<p align="center">If this project helps you, please give the original repo a ⭐!</p>
