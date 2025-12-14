@@ -219,7 +219,7 @@ function About() {
         <div className={`flex items-center justify-center gap-2 text-sm ${colors.textMuted} opacity-0 animate-fade-in delay-400`}>
           <span>{t('about.madeWith')}</span>
           <Heart size={14} className="text-red-500 fill-red-500" />
-          <span>{t('about.by')} hj01857655</span>
+          <span>{t('about.by')} ipiggy</span>
           <span className="mx-1">·</span>
           <span>© 2025</span>
         </div>

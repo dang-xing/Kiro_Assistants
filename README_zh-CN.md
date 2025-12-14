@@ -138,7 +138,11 @@
 
 [GPL-3.0](LICENSE) - 修改后必须开源。
 
+## 🙏 致谢
+
+本项目基于 [hj01857655](https://github.com/hj01857655) 的 [kiro-account-manager](https://github.com/hj01857655/kiro-account-manager) 开发，感谢原作者的优秀工作！
+
 ---
 
-<p align="center">Made with ❤️ by hj01857655</p>
-<p align="center">如果这个项目对你有帮助，请给个 ⭐！</p>
+<p align="center">原项目作者 <a href="https://github.com/hj01857655">hj01857655</a> ❤️</p>
+<p align="center">如果这个项目对你有帮助，请给原项目一个 ⭐ 支持！</p>

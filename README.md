@@ -130,7 +130,11 @@ This software is for learning and communication purposes only. Do not use for co
 
 [GPL-3.0](LICENSE) - Modifications must be open-sourced.
 
+## 🙏 Acknowledgments
+
+This project is based on [kiro-account-manager](https://github.com/hj01857655/kiro-account-manager) by [hj01857655](https://github.com/hj01857655). Thanks for the excellent work!
+
 ---
 
-<p align="center">Made with ❤️ by hj01857655</p>
-<p align="center">If this project helps you, please give it a ⭐!</p>
+<p align="center">Original project by <a href="https://github.com/hj01857655">hj01857655</a> ❤️</p>
+<p align="center">If this project helps you, please give the original repo a ⭐!</p>

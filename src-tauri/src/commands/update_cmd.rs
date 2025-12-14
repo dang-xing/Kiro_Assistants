@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 use reqwest::Proxy;
 
-const UPDATE_URL: &str = "https://github.com/hj01857655/kiro-account-manager/releases/latest/download/latest.json";
+const UPDATE_URL: &str = "https://github.com/ipiggyzhu/KiroAccountManager/releases/latest/download/latest.json";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UpdateInfo {

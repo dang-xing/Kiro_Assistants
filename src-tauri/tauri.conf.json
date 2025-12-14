@@ -45,7 +45,7 @@
     "active": true,
     "createUpdaterArtifacts": true,
     "category": "DeveloperTool",
-    "copyright": "© 2025 hj01857655",
+    "copyright": "© 2025 ipiggy (Based on hj01857655's work)",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -71,9 +71,9 @@
   "plugins": {
     "updater": {
       "endpoints": [
-        "https://github.com/hj01857655/kiro-account-manager/releases/latest/download/latest.json"
+        "https://github.com/ipiggyzhu/KiroAccountManager/releases/latest/download/latest.json"
       ],
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDVGOUFCNTE3RkIwREY5QTcKUldTbitRMzdGN1dhWDhaWi95UGxLSTkrNXZPTEZsWnd1bUtIS3dSOHlLb2Y1SWNBWVUxK3FjK2QK"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDcyRkNGMjlCRDRENkRCRDcKUldUWDI5YlVtL0w4Y3RtNVFyQ2hPL3lXcjVqWEMvMVFYUjVucGpLaFlIOHJLSnhERWtIdisxUVYK"
     }
   }
 }
