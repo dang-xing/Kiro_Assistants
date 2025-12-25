@@ -29,6 +29,11 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Install Tauri CLI
+        shell: bash
+        run: |
+          cargo install tauri-cli --version "^2.0"
+
       - name: Clean and install dependencies
         shell: bash
         run: |
