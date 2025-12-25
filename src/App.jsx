@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
-import Sidebar from './components/Sidebar'
 import Home from './components/Home'
 import AccountManager from './components/AccountManager/index'
 import Settings from './components/Settings'
@@ -11,6 +10,7 @@ import Login from './components/Login'
 import WebOAuthLogin from './components/WebOAuthLogin'
 import AuthCallback from './components/AuthCallback'
 import UpdateChecker from './components/UpdateChecker'
+import TopNav from './components/TopNav'
 
 import { useTheme } from './contexts/ThemeContext'
 
@@ -37,7 +37,6 @@ function App() {
       const refreshThreshold = 5 * 60 * 1000 // 提前 5 分钟
       
       const expiredAccounts = accounts.filter(acc => {
-        // 跳过已封禁账号
         if (acc.status === '已封禁' || acc.status === '封禁') return false
         if (!acc.expiresAt) return false
         const expiresAt = new Date(acc.expiresAt.replace(/\//g, '-'))
@@ -51,7 +50,6 @@ function App() {
       
       console.log(`[AutoRefresh] 刷新 ${expiredAccounts.length} 个过期 token...`)
       
-      // 并发刷新
       await Promise.allSettled(
         expiredAccounts.map(async (account) => {
           try {
@@ -82,7 +80,6 @@ function App() {
       const refreshThreshold = 5 * 60 * 1000
       
       const expiredAccounts = accounts.filter(acc => {
-        // 跳过已封禁账号
         if (acc.status === '已封禁' || acc.status === '封禁') return false
         if (!acc.expiresAt) return false
         const expiresAt = new Date(acc.expiresAt.replace(/\//g, '-'))
@@ -119,10 +116,8 @@ function App() {
       clearInterval(refreshTimerRef.current)
     }
     
-    // 启动时只刷新 token（快速启动）
     refreshExpiredTokensOnly()
     
-    // 从设置读取刷新间隔
     const settings = await invoke('get_app_settings').catch(() => ({}))
     const intervalMs = (settings.autoRefreshInterval || 50) * 60 * 1000
     
@@ -133,27 +128,23 @@ function App() {
   useEffect(() => {
     checkAuth()
     
-    // 检查是否是回调页面
     const url = new URL(window.location.href)
     if (url.pathname === '/callback' && (url.searchParams.has('code') || url.searchParams.has('state'))) {
       setActiveMenu('callback')
       return
     }
     
-    // 监听登录成功事件
     const unlisten = listen('login-success', (event) => {
       console.log('Login success in App:', event.payload)
       checkAuth()
       setActiveMenu('token')
     })
     
-    // 监听设置变化，重启定时器
     const unlistenSettings = listen('settings-changed', () => {
       console.log('[AutoRefresh] 设置已变化，重启定时器')
       startAutoRefreshTimer()
     })
     
-    // 启动自动刷新定时器
     startAutoRefreshTimer()
     
     return () => { 
@@ -211,12 +202,10 @@ function App() {
   }
 
   return (
-    <div className={`flex h-screen ${colors.main}`}>
-      <Sidebar 
+    <div className={`flex flex-col h-screen ${colors.main}`}>
+      <TopNav 
         activeMenu={activeMenu} 
         onMenuChange={setActiveMenu}
-        user={user}
-        onLogout={handleLogout}
       />
       <main className="flex-1 overflow-hidden">
         {renderContent()}

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { invoke } from '@tauri-apps/api/core'
-import { RefreshCw, Users, Zap, Shield, Clock, TrendingUp, Sparkles } from 'lucide-react'
+import { RefreshCw, Users, Zap, Shield, TrendingUp, Sparkles, Plus, ChevronRight, Download, ArrowRightLeft } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContext'
 import { useDialog } from '../contexts/DialogContext'
 import { useI18n } from '../i18n.jsx'
-import { calcAccountStats, getQuota, getUsed } from '../utils/accountStats'
+import { getQuota, getUsed } from '../utils/accountStats'
 
 // 骨架屏组件
 function Skeleton({ className }) {
@@ -15,63 +15,36 @@ function Skeleton({ className }) {
 function LoadingSkeleton({ isDark, colors }) {
   return (
     <div className={`h-full overflow-auto ${colors.main}`}>
-      {/* 背景装饰 */}
-      <div className="bg-glow bg-glow-1" />
-      <div className="bg-glow bg-glow-2" />
-      
-      <div className="max-w-5xl mx-auto p-8 relative">
+      <div className="max-w-6xl mx-auto p-6">
         {/* Header 骨架 */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Skeleton className="w-12 h-12 rounded-2xl" />
-            <Skeleton className="w-64 h-8 rounded-lg" />
+        <div className="flex items-center justify-between mb-6">
+          <Skeleton className="w-48 h-8 rounded-lg" />
+          <div className="flex gap-3">
+            <Skeleton className="w-28 h-10 rounded-xl" />
+            <Skeleton className="w-28 h-10 rounded-xl" />
           </div>
-          <Skeleton className="w-80 h-5 rounded-lg mt-3" />
         </div>
 
         {/* 统计卡片骨架 */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className={`${colors.card} rounded-2xl p-5 border ${colors.cardBorder}`}>
-              <div className="flex items-center justify-between mb-3">
-                <Skeleton className="w-12 h-12 rounded-xl" />
-                <Skeleton className="w-12 h-10 rounded-lg" />
-              </div>
-              <Skeleton className="w-20 h-4 rounded" />
+        <div className="grid grid-cols-5 gap-4 mb-6">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className={`${colors.card} rounded-2xl p-4 border ${colors.cardBorder}`}>
+              <Skeleton className="w-8 h-8 rounded-lg mb-3" />
+              <Skeleton className="w-16 h-8 rounded mb-2" />
+              <Skeleton className="w-24 h-4 rounded" />
             </div>
           ))}
         </div>
 
         {/* 主内容骨架 */}
-        <div className="grid grid-cols-2 gap-6">
-          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} overflow-hidden`}>
-            <div className={`px-6 py-4 border-b ${colors.cardBorder}`}>
-              <Skeleton className="w-32 h-5 rounded" />
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="flex items-center gap-4">
-                <Skeleton className="w-16 h-16 rounded-2xl" />
-                <div className="flex-1 space-y-2">
-                  <Skeleton className="w-24 h-5 rounded" />
-                  <Skeleton className="w-16 h-4 rounded" />
-                </div>
-              </div>
-              <Skeleton className="w-full h-24 rounded-xl" />
-            </div>
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} p-5`}>
+            <Skeleton className="w-32 h-5 rounded mb-4" />
+            <Skeleton className="w-full h-20 rounded-xl" />
           </div>
-          
-          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} overflow-hidden`}>
-            <div className={`px-6 py-4 border-b ${colors.cardBorder}`}>
-              <Skeleton className="w-24 h-5 rounded" />
-            </div>
-            <div className="p-6 space-y-4">
-              <Skeleton className="w-full h-16 rounded-xl" />
-              <div className="grid grid-cols-3 gap-3">
-                {[...Array(3)].map((_, i) => (
-                  <Skeleton key={i} className="h-20 rounded-xl" />
-                ))}
-              </div>
-            </div>
+          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} p-5`}>
+            <Skeleton className="w-32 h-5 rounded mb-4" />
+            <Skeleton className="w-full h-20 rounded-xl" />
           </div>
         </div>
       </div>
@@ -79,37 +52,15 @@ function LoadingSkeleton({ isDark, colors }) {
   )
 }
 
-// 统计卡片组件 - 紧凑版
-function StatCard({ icon: Icon, iconBg, value, label, delay, isDark }) {
-  return (
-    <div 
-      className={`card-glow rounded-xl p-3 shadow-sm border animate-scale-in ${delay}`}
-      style={{ 
-        background: isDark ? 'rgba(30, 30, 50, 0.8)' : 'white',
-        borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
-      }}
-    >
-      <div className="flex items-center gap-3">
-        <div className={`w-9 h-9 ${iconBg} rounded-lg flex items-center justify-center`}>
-          <Icon size={18} className={isDark ? 'text-current' : ''} />
-        </div>
-        <div>
-          <span className={`text-xl font-bold stat-number ${isDark ? 'text-white' : 'text-gray-900'}`}>{value}</span>
-          <div className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{label}</div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Home() {
+function Home({ onNavigate }) {
   const { theme, colors } = useTheme()
-  const { showError } = useDialog()
+  const { showError, showConfirm, showSuccess } = useDialog()
   const { t } = useI18n()
   const [tokens, setTokens] = useState([])
   const [localToken, setLocalToken] = useState(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [switchingId, setSwitchingId] = useState(null)
 
   useEffect(() => { loadData() }, [])
 
@@ -124,7 +75,7 @@ function Home() {
       setLocalToken(localData)
     } catch (e) { 
       console.error('Failed to load data:', e)
-      showError('加载失败', '加载数据失败: ' + e)
+      showError(t('home.loadFailed'), t('home.loadDataFailed') + ': ' + e)
     }
     setLoading(false)
   }
@@ -135,9 +86,77 @@ function Home() {
     setTimeout(() => setRefreshing(false), 500)
   }
 
-  const stats = calcAccountStats(tokens)
+  // 切换账号
+  const handleSwitchAccount = async (account) => {
+    if (!account.accessToken || !account.refreshToken) {
+      showError(t('switch.failed'), t('switch.missingAuth'))
+      return
+    }
+    
+    const confirmed = await showConfirm(t('switch.title'), `${t('switch.confirmSwitch')} ${account.email}？`)
+    if (!confirmed) return
+    
+    setSwitchingId(account.id)
+    
+    try {
+      const appSettings = await invoke('get_app_settings').catch(() => ({}))
+      const autoChangeMachineId = appSettings.autoChangeMachineId ?? false
+      const bindMachineIdToAccount = appSettings.bindMachineIdToAccount ?? false
+      const useBoundMachineId = appSettings.useBoundMachineId ?? true
+      
+      if (autoChangeMachineId && bindMachineIdToAccount) {
+        try {
+          let boundMachineId = await invoke('get_bound_machine_id', { accountId: account.id }).catch(() => null)
+          if (!boundMachineId) {
+            boundMachineId = await invoke('generate_machine_guid')
+            await invoke('bind_machine_id_to_account', { accountId: account.id, machineId: boundMachineId })
+          }
+          if (useBoundMachineId) {
+            await invoke('set_custom_machine_guid', { newGuid: boundMachineId })
+          }
+        } catch (e) {
+          console.error('[MachineId] Failed to handle bound machine ID:', e)
+        }
+      }
+      
+      const isIdC = account.provider === 'BuilderId' || account.provider === 'Enterprise' || account.clientIdHash
+      const authMethod = isIdC ? 'IdC' : 'social'
+      const shouldResetMachineId = autoChangeMachineId && !(bindMachineIdToAccount && useBoundMachineId)
+      
+      const params = {
+        accessToken: account.accessToken,
+        refreshToken: account.refreshToken,
+        provider: account.provider || 'Google',
+        authMethod,
+        resetMachineId: shouldResetMachineId,
+        autoRestart: false
+      }
+      
+      if (isIdC) {
+        params.clientIdHash = account.clientIdHash || null
+        params.region = account.region || 'us-east-1'
+        params.clientId = account.clientId || null
+        params.clientSecret = account.clientSecret || null
+      } else {
+        params.profileArn = account.profileArn || 'arn:aws:codewhisperer:us-east-1:699475941385:profile/EHGA3GRVQMUK'
+      }
+      
+      await invoke('switch_kiro_account', { params })
+      
+      // 刷新数据
+      await loadData()
+      
+      showSuccess(t('switch.success'), account.email)
+    } catch (e) {
+      showError(t('switch.failed'), String(e))
+    } finally {
+      setSwitchingId(null)
+    }
+  }
+
+  const isDark = theme === 'dark' || theme === 'purple'
   
-  // 找到与当前登录账号匹配的账号（按优先级：refreshToken > accessToken > provider）
+  // 找到当前登录账号
   const currentAccount = localToken 
     ? tokens.find(t => 
         (localToken.refreshToken && t.refreshToken === localToken.refreshToken) ||
@@ -145,346 +164,408 @@ function Home() {
         (localToken.provider && t.provider === localToken.provider)
       )
     : null
-  const currentQuota = currentAccount ? getQuota(currentAccount) : 0
-  const currentUsed = currentAccount ? getUsed(currentAccount) : 0
-  const currentPercent = currentQuota > 0 ? Math.round((currentUsed / currentQuota) * 100) : 0
-  const isDark = theme === 'dark'
+
+  // 找到最佳推荐账号（排除当前账号，配额剩余最多的前4个）
+  const getBestAccounts = () => {
+    const validAccounts = tokens.filter(acc => {
+      // 排除当前账号
+      if (currentAccount && acc.id === currentAccount.id) return false
+      if (acc.status === '已封禁' || acc.status === '封禁') return false
+      const quota = getQuota(acc)
+      const used = getUsed(acc)
+      return quota > 0 && (quota - used) > 0
+    })
+    
+    // 按剩余配额排序，取前4个
+    return validAccounts
+      .map(acc => ({
+        ...acc,
+        quota: getQuota(acc),
+        used: getUsed(acc),
+        remaining: getQuota(acc) - getUsed(acc),
+      }))
+      .sort((a, b) => b.remaining - a.remaining)
+      .slice(0, 4)
+  }
+
+  const bestAccounts = getBestAccounts()
 
   if (loading) {
     return <LoadingSkeleton isDark={isDark} colors={colors} />
   }
 
-  const statCards = [
-    { icon: Users, iconBg: isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-600', value: stats.total, label: t('home.totalAccounts'), delay: 'delay-100' },
-    { icon: Shield, iconBg: isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600', value: stats.active, label: t('home.activeAccounts'), delay: 'delay-200' },
-    { icon: Zap, iconBg: isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-100 text-purple-600', value: stats.proPlus + stats.pro, label: t('home.proAccounts'), delay: 'delay-300' },
-    { icon: TrendingUp, iconBg: isDark ? 'bg-orange-500/20 text-orange-400' : 'bg-orange-100 text-orange-600', value: `${stats.usagePercent}%`, label: t('home.usagePercent'), delay: 'delay-400' },
-  ]
+  // 获取用户名显示
+  const getUserName = () => {
+    if (currentAccount?.email) {
+      return currentAccount.email.split('@')[0]
+    }
+    if (localToken?.provider) {
+      return localToken.provider
+    }
+    return 'User'
+  }
 
   return (
     <div className={`h-full overflow-auto ${colors.main}`}>
-      {/* 背景装饰光晕 */}
-      <div className="bg-glow bg-glow-1" />
-      <div className="bg-glow bg-glow-2" />
-      
-      <div className="max-w-5xl mx-auto p-8 relative">
+      <div className="max-w-6xl mx-auto p-6">
         {/* Header */}
-        <div className="mb-8 animate-bounce-in">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25 animate-float">
-              <Sparkles size={24} className="text-white" />
-            </div>
-            <h1 className={`text-2xl font-bold ${colors.text}`}>{t('home.title')}</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className={`text-2xl font-bold ${colors.text}`}>
+            {t('home.greeting')}, {getUserName()} 👋
+          </h1>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => onNavigate?.('login')}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all ${
+                isDark 
+                  ? 'border-white/10 text-gray-300 hover:bg-white/5' 
+                  : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <Plus size={18} />
+              <span>{t('home.addAccount')}</span>
+            </button>
+            <button 
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-all disabled:opacity-50"
+            >
+              <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
+              <span>{t('home.refreshQuota')}</span>
+            </button>
           </div>
-          <p className={colors.textMuted}>{t('home.subtitle')}</p>
         </div>
 
-        {/* 统计卡片 */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          {statCards.map((card, index) => (
-            <StatCard key={index} {...card} isDark={isDark} />
-          ))}
-        </div>
-
-        <div className="grid grid-cols-2 gap-6 mb-6">
-          {/* 本地 Kiro 账号 */}
-          <div className={`card-glow ${colors.card} rounded-2xl shadow-sm border ${colors.cardBorder} overflow-hidden animate-scale-in delay-300`}>
-            <div className={`px-6 py-4 border-b ${colors.cardBorder} flex items-center justify-between`}>
-              <h2 className={`font-semibold ${colors.text}`}>{t('home.currentAccount')}</h2>
-              <button 
-                onClick={handleRefresh} 
-                className={`btn-icon p-2 ${isDark ? 'hover:bg-white/10' : 'hover:bg-gray-100'} rounded-xl ${refreshing ? 'spinning' : ''}`}
-              >
-                <RefreshCw size={16} className={`${colors.textMuted} ${refreshing ? 'animate-spin' : ''}`} />
-              </button>
+        {/* 额度统计 - 当前账号 */}
+        {currentAccount ? (
+          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} p-5 mb-6`}>
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp size={20} className="text-blue-500" />
+              <h2 className={`font-semibold ${colors.text}`}>{t('home.quotaStats')}</h2>
             </div>
-            <div className="p-6">
-              {localToken ? (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg transition-transform hover:scale-105 ${
-                      localToken.provider === 'Google' ? 'bg-gradient-to-br from-red-500 to-orange-500 shadow-red-500/25' :
-                      localToken.provider === 'Github' ? 'bg-gradient-to-br from-gray-700 to-gray-900 shadow-gray-500/25' :
-                      'bg-gradient-to-br from-blue-500 to-purple-600 shadow-blue-500/25'
-                    }`}>
-                      {localToken.provider?.[0] || 'K'}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className={`font-semibold ${colors.text} text-lg`}>{localToken.provider || '未知'}</span>
-                        <span className={`px-2.5 py-1 ${isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-700'} rounded-full text-xs font-medium pulse-ring`}>{t('home.loggedIn')}</span>
+            
+            {(() => {
+              const quota = getQuota(currentAccount)
+              const used = getUsed(currentAccount)
+              const remaining = quota - used
+              const usagePercent = quota > 0 ? ((used / quota) * 100).toFixed(1) : 0
+              
+              return (
+                <>
+                  <div className="grid grid-cols-4 gap-4 mb-4">
+                    <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <TrendingUp size={16} className="text-green-500" />
+                        <span className={`text-sm ${colors.textMuted}`}>{t('home.totalQuota')}</span>
                       </div>
-                      <div className={`text-sm ${colors.textMuted} mt-1`}>{localToken.authMethod || 'social'}</div>
+                      <div className={`text-2xl font-bold ${colors.text}`}>{quota.toLocaleString()}</div>
+                    </div>
+                    
+                    <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Zap size={16} className="text-red-500" />
+                        <span className={`text-sm ${colors.textMuted}`}>{t('home.usedQuota')}</span>
+                      </div>
+                      <div className={`text-2xl font-bold ${colors.text}`}>{used.toLocaleString()}</div>
+                    </div>
+                    
+                    <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles size={16} className="text-green-500" />
+                        <span className={`text-sm ${colors.textMuted}`}>{t('home.remainingQuota')}</span>
+                      </div>
+                      <div className={`text-2xl font-bold text-green-500`}>{remaining.toLocaleString()}</div>
+                    </div>
+                    
+                    <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Shield size={16} className="text-blue-500" />
+                        <span className={`text-sm ${colors.textMuted}`}>{t('home.usageRate')}</span>
+                      </div>
+                      <div className={`text-2xl font-bold ${colors.text}`}>{usagePercent}%</div>
                     </div>
                   </div>
                   
-                  <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4 space-y-3`}>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className={colors.textMuted}>Access Token</span>
-                      <span title={localToken.accessToken} className={`font-mono text-xs ${colors.textMuted} truncate max-w-[180px] cursor-help`}>
-                        {localToken.accessToken?.substring(0, 20)}...
-                      </span>
+                  {/* 总体使用进度 */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className={`text-sm ${colors.textMuted}`}>{t('home.overallProgress')}</span>
+                      <span className={`text-sm ${colors.text}`}>{used.toLocaleString()} / {quota.toLocaleString()}</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className={colors.textMuted}>Refresh Token</span>
-                      <span title={localToken.refreshToken} className={`font-mono text-xs ${colors.textMuted} truncate max-w-[180px] cursor-help`}>
-                        {localToken.refreshToken?.substring(0, 20)}...
-                      </span>
-                    </div>
-                    {localToken.authMethod === 'IdC' ? (
-                      <>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className={colors.textMuted}>Client ID Hash</span>
-                          <span title={localToken.clientIdHash} className={`font-mono text-xs ${colors.textMuted} truncate max-w-[180px] cursor-help`}>
-                            {localToken.clientIdHash || '-'}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className={colors.textMuted}>Region</span>
-                          <span className={`font-mono text-xs ${colors.textMuted}`}>
-                            {localToken.region || '-'}
-                          </span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="flex items-center justify-between text-sm">
-                        <span className={colors.textMuted}>Profile ARN</span>
-                        <span title={localToken.profileArn} className={`font-mono text-xs ${colors.textMuted} truncate max-w-[180px] cursor-help`}>
-                          {localToken.profileArn || '-'}
-                        </span>
-                      </div>
-                    )}
-                    <div className="flex items-center justify-between text-sm">
-                      <span className={colors.textMuted}>{t('home.expiresAt')}</span>
-                      <span className={`${colors.text} flex items-center gap-1`}>
-                        <Clock size={12} />
-                        {localToken.expiresAt ? new Date(localToken.expiresAt).toLocaleString() : '未知'}
-                      </span>
+                    <div className={`h-2.5 ${isDark ? 'bg-white/10' : 'bg-gray-200'} rounded-full overflow-hidden`}>
+                      <div 
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          usagePercent > 80 ? 'bg-red-500' : 
+                          usagePercent > 50 ? 'bg-yellow-500' : 
+                          'bg-green-500'
+                        }`}
+                        style={{ width: `${usagePercent}%` }}
+                      />
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="text-center py-10">
-                  <div className={`w-20 h-20 ${isDark ? 'bg-white/10' : 'bg-gray-100'} rounded-full flex items-center justify-center mx-auto mb-4 animate-float`}>
-                    <Users size={32} className={colors.textMuted} />
-                  </div>
-                  <div className={`${colors.textMuted} mb-1 font-medium`}>{t('home.notLoggedIn')}</div>
-                  <div className={`text-sm ${colors.textMuted}`}>{t('home.clickToSwitch')}</div>
-                </div>
-              )}
+                </>
+              )
+            })()}
+          </div>
+        ) : (
+          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} p-5 mb-6`}>
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp size={20} className="text-blue-500" />
+              <h2 className={`font-semibold ${colors.text}`}>{t('home.quotaStats')}</h2>
+            </div>
+            <div className="text-center py-6">
+              <div className={colors.textMuted}>{t('home.notLoggedIn')}</div>
             </div>
           </div>
+        )}
 
-          {/* 配额总览 - 紧凑版 */}
-          <div className={`card-glow ${colors.card} rounded-2xl shadow-sm border ${colors.cardBorder} p-5 animate-scale-in delay-400`}>
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-100'}`}>
-                <TrendingUp size={20} className="text-emerald-500" />
+        {/* 主内容区 */}
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          {/* 当前账号 */}
+          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} p-5`}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
               </div>
-              <h2 className={`font-semibold ${colors.text}`}>{t('home.quotaOverview')}</h2>
+              <h2 className={`font-semibold ${colors.text}`}>{t('home.currentAccount')}</h2>
             </div>
-            <div className="flex items-center gap-4 mb-3">
-              <div className="flex-1">
-                <div className={`h-3 ${isDark ? 'bg-white/10' : 'bg-gray-100'} rounded-full overflow-hidden`}>
-                  <div 
-                    className={`h-full rounded-full transition-all duration-1000 ease-out ${
-                      stats.usagePercent > 80 ? 'bg-gradient-to-r from-red-400 to-red-500' : 
-                      stats.usagePercent > 50 ? 'bg-gradient-to-r from-yellow-400 to-orange-500' : 
-                      'bg-gradient-to-r from-green-400 to-emerald-500'
-                    }`}
-                    style={{ width: `${stats.usagePercent}%` }}
-                  />
+            
+            {currentAccount ? (
+              <div className="space-y-4">
+                {(() => {
+                  const usageData = currentAccount.usageData
+                  const breakdown = usageData?.usageBreakdownList?.[0] || usageData?.usageBreakdown
+                  const subInfo = usageData?.subscriptionInfo
+                  const userInfo = usageData?.userInfo
+                  const quota = getQuota(currentAccount)
+                  const used = getUsed(currentAccount)
+                  const daysUntilReset = usageData?.daysUntilReset ?? 0
+                  const nextDateReset = usageData?.nextDateReset
+                  
+                  // Token 过期时间计算
+                  const expiresAt = currentAccount.expiresAt ? new Date(currentAccount.expiresAt.replace(/\//g, '-')) : null
+                  const now = new Date()
+                  const tokenMinutes = expiresAt ? Math.max(0, Math.round((expiresAt - now) / 60000)) : 0
+                  const tokenStatus = tokenMinutes > 30 ? 'text-green-500' : tokenMinutes > 10 ? 'text-yellow-500' : 'text-red-500'
+                  
+                  // 基础额度和试用额度
+                  const mainUsed = breakdown?.currentUsage ?? 0
+                  const mainLimit = breakdown?.usageLimit ?? 0
+                  const freeTrial = breakdown?.freeTrialInfo
+                  const freeTrialUsed = freeTrial?.currentUsage ?? 0
+                  const freeTrialLimit = freeTrial?.usageLimit ?? 0
+                  const freeTrialExpires = freeTrial?.expirationDate
+                  
+                  return (
+                    <>
+                      {/* 顶部统计 */}
+                      <div className="grid grid-cols-4 gap-4">
+                        <div>
+                          <div className={`text-xs ${colors.textMuted} mb-1`}>{t('home.monthlyUsage')}</div>
+                          <div className={`text-lg font-bold ${colors.text}`}>{used} / {quota}</div>
+                          <div className={`h-1.5 ${isDark ? 'bg-white/10' : 'bg-gray-200'} rounded-full overflow-hidden mt-1`}>
+                            <div 
+                              className="h-full bg-green-500 rounded-full"
+                              style={{ width: `${quota > 0 ? (used / quota) * 100 : 0}%` }}
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <div className={`text-xs ${colors.textMuted} mb-1`}>{t('home.subscriptionRemaining')}</div>
+                          <div className={`text-lg font-bold ${colors.text}`}>{daysUntilReset} {t('common.days')}</div>
+                        </div>
+                        <div>
+                          <div className={`text-xs ${colors.textMuted} mb-1`}>Token {t('home.status')}</div>
+                          <div className={`text-lg font-bold ${tokenStatus}`}>{tokenMinutes} {t('home.minutes')}</div>
+                        </div>
+                        <div>
+                          <div className={`text-xs ${colors.textMuted} mb-1`}>{t('home.loginMethod')}</div>
+                          <div className={`text-lg font-bold ${colors.text}`}>{currentAccount.provider || 'Unknown'}</div>
+                        </div>
+                      </div>
+                      
+                      {/* 订阅详情 */}
+                      <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                        <div className={`text-xs font-medium ${colors.textMuted} mb-3`}>{t('home.subscriptionDetails')}</div>
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className={colors.textMuted}>{t('home.subscriptionType')}:</span>
+                            <span className={colors.text}>{subInfo?.subscriptionTitle || 'FREE'}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className={colors.textMuted}>{t('home.expiresAt')}:</span>
+                            <span className={colors.text}>{nextDateReset ? new Date(nextDateReset * 1000).toLocaleDateString() : '-'}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className={colors.textMuted}>{t('home.overageCapability')}:</span>
+                            <span className={colors.text}>{subInfo?.overageCapability || '-'}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className={colors.textMuted}>{t('home.upgradeable')}:</span>
+                            <span className={colors.text}>{subInfo?.upgradeCapability || '-'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* 额度明细 */}
+                      <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                        <div className={`text-xs font-medium ${colors.textMuted} mb-3`}>{t('home.quotaDetails')}</div>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                            <span className={colors.textMuted}>{t('home.baseQuota')}:</span>
+                            <span className={colors.text}>{mainUsed} / {mainLimit}</span>
+                          </div>
+                          {freeTrialLimit > 0 && (
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full bg-purple-500" />
+                              <span className="text-purple-500">{t('home.trialQuota')}:</span>
+                              <span className={colors.text}>{freeTrialUsed} / {freeTrialLimit}</span>
+                              {freeTrialExpires && (
+                                <span className={`text-xs ${colors.textMuted}`}>({t('home.until')} {new Date(freeTrialExpires * 1000).toLocaleDateString()})</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* 账户信息 */}
+                      <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-xl p-4`}>
+                        <div className={`text-xs font-medium ${colors.textMuted} mb-3`}>{t('home.accountInfo')}</div>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex">
+                            <span className={`${colors.textMuted} w-20 shrink-0`}>User ID:</span>
+                            <span className={`${colors.text} font-mono text-xs truncate`}>{userInfo?.userId || '-'}</span>
+                          </div>
+                          <div className="flex">
+                            <span className={`${colors.textMuted} w-20 shrink-0`}>IDP:</span>
+                            <span className={colors.text}>{currentAccount.provider || '-'}</span>
+                          </div>
+                          <div className="flex">
+                            <span className={`${colors.textMuted} w-20 shrink-0`}>{t('home.resetDate')}:</span>
+                            <span className={colors.text}>{nextDateReset ? new Date(nextDateReset * 1000).toLocaleDateString() : '-'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )
+                })()}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className={`w-16 h-16 ${isDark ? 'bg-white/10' : 'bg-gray-100'} rounded-full flex items-center justify-center mx-auto mb-3`}>
+                  <Users size={24} className={colors.textMuted} />
                 </div>
+                <div className={colors.textMuted}>{t('home.notLoggedIn')}</div>
+                <div className={`text-sm ${colors.textMuted} mt-1`}>{t('home.clickToSwitch')}</div>
               </div>
-              <span className={`text-sm font-semibold px-2 py-0.5 rounded-full ${
-                stats.usagePercent > 80 
-                  ? (isDark ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-600') 
-                  : stats.usagePercent > 50 
-                    ? (isDark ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-700') 
-                    : (isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600')
-              }`}>
-                {stats.usagePercent}%
-              </span>
+            )}
+          </div>
+
+          {/* 最佳账号推荐 */}
+          <div className={`${colors.card} rounded-2xl border ${colors.cardBorder} p-5`}>
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles size={20} className="text-purple-500" />
+              <h2 className={`font-semibold ${colors.text}`}>{t('home.bestRecommend')}</h2>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className={colors.textMuted}>{t('home.usedTotal')}</span>
-              <span className={`font-medium ${colors.text}`}>{stats.totalUsed} / {stats.totalQuota}</span>
-            </div>
+            
+            {bestAccounts.length > 0 ? (
+              <div className="space-y-4">
+                {bestAccounts.map((acc, idx) => {
+                  const usagePercent = acc.quota > 0 ? Math.round((acc.used / acc.quota) * 100) : 0
+                  const isSwitching = switchingId === acc.id
+                  
+                  return (
+                    <div 
+                      key={acc.id || idx}
+                      className={`p-4 rounded-xl ${isDark ? 'bg-white/5' : 'bg-gray-50'}`}
+                    >
+                      {/* 账号名称和切换按钮 */}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className={`${colors.text} font-medium truncate flex-1`}>{acc.email}</div>
+                        <button
+                          onClick={() => handleSwitchAccount(acc)}
+                          disabled={isSwitching}
+                          title={t('home.switch')}
+                          className={`p-2 rounded-lg transition-all ${
+                            isSwitching
+                              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                              : isDark 
+                                ? 'bg-white/10 hover:bg-white/20 text-gray-300' 
+                                : 'bg-gray-200 hover:bg-gray-300 text-gray-600'
+                          }`}
+                        >
+                          {isSwitching ? (
+                            <RefreshCw size={16} className="animate-spin" />
+                          ) : (
+                            <ArrowRightLeft size={16} />
+                          )}
+                        </button>
+                      </div>
+                      
+                      {/* 使用量标题和百分比 */}
+                      <div className="flex items-center justify-between mb-2">
+                        <span className={`text-sm ${colors.textMuted}`}>{t('home.usage')}</span>
+                        <span className={`text-sm font-medium ${usagePercent <= 50 ? 'text-green-500' : usagePercent <= 80 ? 'text-yellow-500' : 'text-red-500'}`}>
+                          {usagePercent}%
+                        </span>
+                      </div>
+                      
+                      {/* 进度条 - 显示已使用部分 */}
+                      <div className={`h-2 ${isDark ? 'bg-white/10' : 'bg-gray-200'} rounded-full overflow-hidden mb-2`}>
+                        <div 
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            usagePercent <= 50 ? 'bg-green-500' : usagePercent <= 80 ? 'bg-yellow-500' : 'bg-red-500'
+                          }`}
+                          style={{ width: `${usagePercent}%` }}
+                        />
+                      </div>
+                      
+                      {/* 用量详情 */}
+                      <div className="flex items-center justify-between text-sm">
+                        <span className={colors.text}>{acc.used} / {acc.quota}</span>
+                        <span className={colors.textMuted}>{t('home.remaining')} {acc.remaining}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className={colors.textMuted}>{t('home.noAvailableAccounts')}</div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* 当前账号配额详情 */}
-        {localToken && currentAccount && (() => {
-          const usageData = currentAccount.usageData
-          const breakdown = usageData?.usageBreakdownList?.[0] || usageData?.usageBreakdown
-          const subInfo = usageData?.subscriptionInfo
-          const userInfo = usageData?.userInfo
-          const overageConfig = usageData?.overageConfiguration
-          const freeTrial = breakdown?.freeTrialInfo
-          const bonuses = breakdown?.bonuses || []
-          const mainUsed = breakdown?.currentUsage ?? 0
-          const mainLimit = breakdown?.usageLimit ?? 0
-          const mainPercent = mainLimit > 0 ? Math.round((mainUsed / mainLimit) * 100) : 0
-          const daysUntilReset = usageData?.daysUntilReset ?? 0
-          const nextDateReset = usageData?.nextDateReset
+        {/* 底部快捷入口 */}
+        {/* <div className="grid grid-cols-2 gap-6">
+          <button 
+            onClick={() => onNavigate?.('token')}
+            className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+              isDark 
+                ? 'border-white/10 hover:bg-white/5' 
+                : 'border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <span className="text-blue-500 font-medium">{t('home.viewAllAccounts')}</span>
+            <ChevronRight size={20} className="text-blue-500" />
+          </button>
           
-          return (
-            <div className={`card-glow ${colors.card} rounded-2xl shadow-sm border ${colors.cardBorder} overflow-hidden animate-scale-in delay-500`}>
-              {/* 头部：用户信息 + 订阅徽章 */}
-              <div className={`px-5 py-4 border-b ${colors.cardBorder} flex items-center gap-4`}>
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md ${
-                  currentAccount.provider === 'Google' ? 'bg-gradient-to-br from-red-500 to-orange-500' :
-                  currentAccount.provider === 'Github' ? 'bg-gradient-to-br from-gray-700 to-gray-900' :
-                  'bg-gradient-to-br from-blue-500 to-purple-600'
-                }`}>
-                  {currentAccount.provider?.[0] || 'K'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className={`font-semibold ${colors.text} truncate`}>{userInfo?.email || currentAccount.email}</span>
-                    {subInfo?.type && (
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium shrink-0 ${
-                        subInfo.type.includes('PRO+') ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' :
-                        subInfo.type.includes('PRO') ? 'bg-blue-500 text-white' :
-                        (isDark ? 'bg-gray-600 text-gray-300' : 'bg-gray-200 text-gray-700')
-                      }`}>
-                        {subInfo.subscriptionTitle || 'Free'}
-                      </span>
-                    )}
-                  </div>
-                  <div className={`text-xs ${colors.textMuted} mt-0.5`}>{currentAccount.provider} · {daysUntilReset} {t('home.daysUntilReset')}</div>
-                </div>
-              </div>
-              
-              <div className="p-5">
-                {/* 本月用量进度 - 突出显示 */}
-                <div className={`${isDark ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10' : 'bg-gradient-to-r from-blue-50 to-purple-50'} rounded-xl p-4 mb-4`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`text-sm font-medium ${colors.text}`}>{t('home.monthlyUsage')}</span>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-lg font-bold ${
-                        currentPercent > 80 ? 'text-red-500' : currentPercent > 50 ? 'text-amber-500' : (isDark ? 'text-blue-400' : 'text-blue-600')
-                      }`}>{currentPercent}%</span>
-                      <span className={`text-xs ${colors.textMuted}`}>{currentUsed} / {currentQuota}</span>
-                    </div>
-                  </div>
-                  <div className={`h-2.5 ${isDark ? 'bg-white/10' : 'bg-white'} rounded-full overflow-hidden shadow-inner`}>
-                    <div 
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        currentPercent > 80 ? 'bg-gradient-to-r from-red-400 to-red-500' : 
-                        currentPercent > 50 ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 
-                        'bg-gradient-to-r from-blue-400 to-purple-500'
-                      }`}
-                      style={{ width: `${currentPercent}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* 两列布局：订阅详情 + 账户信息 */}
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  {/* 订阅详情 */}
-                  {subInfo && (
-                    <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-lg p-3`}>
-                      <div className={`text-[10px] font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'} mb-2 uppercase tracking-wide`}>{t('home.subscriptionDetails')}</div>
-                      <div className="space-y-1.5 text-xs">
-                        <div className="flex justify-between">
-                          <span className={colors.textMuted}>{t('home.type')}</span>
-                          <span className={colors.text}>{subInfo.subscriptionTitle || '-'}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className={colors.textMuted}>{t('home.overage')}</span>
-                          <span className={`${subInfo.overageCapability === 'OVERAGE_CAPABLE' ? 'text-green-500' : colors.textMuted}`}>
-                            {subInfo.overageCapability === 'OVERAGE_CAPABLE' ? '✓' : '✗'}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className={colors.textMuted}>{t('home.upgrade')}</span>
-                          <span className={`${subInfo.upgradeCapability === 'UPGRADE_CAPABLE' ? 'text-green-500' : colors.textMuted}`}>
-                            {subInfo.upgradeCapability === 'UPGRADE_CAPABLE' ? '✓' : '✗'}
-                          </span>
-                        </div>
-                        {overageConfig && (
-                          <div className="flex justify-between">
-                            <span className={colors.textMuted}>{t('home.status')}</span>
-                            <span className={`${overageConfig.overageStatus === 'ENABLED' ? 'text-green-500' : colors.textMuted}`}>
-                              {overageConfig.overageStatus === 'ENABLED' ? t('home.enabled') : t('home.disabled')}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* 账户信息 */}
-                  <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-lg p-3`}>
-                    <div className={`text-[10px] font-medium ${isDark ? 'text-purple-400' : 'text-purple-600'} mb-2 uppercase tracking-wide`}>{t('home.accountInfo')}</div>
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex justify-between">
-                        <span className={colors.textMuted}>IDP</span>
-                        <span className={colors.text}>{currentAccount.provider || '-'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className={colors.textMuted}>{t('home.reset')}</span>
-                        <span className={colors.text}>{nextDateReset ? new Date(nextDateReset * 1000).toLocaleDateString() : '-'}</span>
-                      </div>
-                      {breakdown?.overageRate && (
-                        <div className="flex justify-between">
-                          <span className={colors.textMuted}>{t('home.rate')}</span>
-                          <span className={colors.text}>${breakdown.overageRate}/次</span>
-                        </div>
-                      )}
-                      <div className="flex justify-between">
-                        <span className={colors.textMuted}>ID</span>
-                        <span className={`${colors.text} font-mono truncate max-w-[80px]`} title={userInfo?.userId}>{userInfo?.userId?.split('.').pop()?.substring(0, 8) || '-'}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 额度明细 - 紧凑横向布局 */}
-                <div className={`${isDark ? 'bg-white/5' : 'bg-gray-50'} rounded-lg p-3`}>
-                  <div className={`text-[10px] font-medium ${colors.text} mb-2 uppercase tracking-wide`}>{t('home.quotaDetails')}</div>
-                  <div className="space-y-2">
-                    {/* 基础额度 */}
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
-                      <span className={`text-xs ${colors.textMuted} w-14 shrink-0`}>{t('home.base')}</span>
-                      <div className={`flex-1 h-1.5 ${isDark ? 'bg-white/10' : 'bg-gray-200'} rounded-full overflow-hidden`}>
-                        <div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${mainPercent}%` }} />
-                      </div>
-                      <span className={`text-[10px] ${colors.textMuted} w-16 text-right shrink-0`}>{mainUsed}/{mainLimit}</span>
-                    </div>
-
-                    {/* 试用额度 */}
-                    {freeTrial && freeTrial.usageLimit > 0 && (
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0" />
-                        <span className={`text-xs text-purple-500 w-14 shrink-0`}>{t('home.trial')}</span>
-                        <div className={`flex-1 h-1.5 ${isDark ? 'bg-purple-500/20' : 'bg-purple-100'} rounded-full overflow-hidden`}>
-                          <div className="h-full rounded-full bg-purple-500 transition-all" style={{ width: `${freeTrial.usageLimit > 0 ? ((freeTrial.currentUsage ?? 0) / freeTrial.usageLimit * 100) : 0}%` }} />
-                        </div>
-                        <span className={`text-[10px] text-purple-500 w-16 text-right shrink-0`}>{freeTrial.currentUsage ?? 0}/{freeTrial.usageLimit}</span>
-                      </div>
-                    )}
-
-                    {/* 奖励额度 */}
-                    {bonuses.map((bonus, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-                        <span className={`text-xs text-amber-600 w-14 shrink-0 truncate`} title={bonus.displayName}>{bonus.displayName?.substring(0, 4) || `奖励${idx+1}`}</span>
-                        <div className={`flex-1 h-1.5 ${isDark ? 'bg-amber-500/20' : 'bg-amber-100'} rounded-full overflow-hidden`}>
-                          <div className="h-full rounded-full bg-amber-500 transition-all" style={{ width: `${bonus.usageLimit > 0 ? ((bonus.currentUsage ?? 0) / bonus.usageLimit * 100) : 0}%` }} />
-                        </div>
-                        <span className={`text-[10px] text-amber-600 w-16 text-right shrink-0`}>{bonus.currentUsage ?? 0}/{bonus.usageLimit ?? 0}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
-
+          <button 
+            onClick={() => onNavigate?.('token')}
+            className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+              isDark 
+                ? 'border-white/10 hover:bg-white/5' 
+                : 'border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <span className="text-blue-500 font-medium">{t('home.exportAccounts')}</span>
+            <Download size={20} className="text-blue-500" />
+          </button>
+        </div> */}
       </div>
     </div>
   )

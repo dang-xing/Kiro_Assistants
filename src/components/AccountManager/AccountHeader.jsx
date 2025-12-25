@@ -28,9 +28,7 @@ function AccountHeader({
         <div className="flex items-center gap-6">
           <div className="animate-slide-in-right">
             <div className="flex items-center gap-3 mb-1">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 animate-float">
-                <Sparkles size={20} className="text-white" />
-              </div>
+             
               <h1 className={`text-xl font-bold ${colors.text}`}>{t('accounts.title')}</h1>
             </div>
             <p className={`text-sm ${colors.textMuted}`}>{t('accounts.subtitle')}</p>
